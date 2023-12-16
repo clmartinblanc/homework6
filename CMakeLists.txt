@@ -3,6 +3,8 @@ project(se_for_sci_hw6 LANGUAGES CXX)
 
 include(FetchContent)
 
+find_package(pybind11 CONFIG REQUIRED)
+
 FetchContent_Declare(
   eigen
   URL https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.bz2
@@ -12,7 +14,13 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(eigen)
 
 if(DEFINED SKBUILD)
-  # ... Fill me in!
+  # add the python set(MODULE_NAME _noxfile)
+  find_package(pybind11)
+  pybind11_add_module(_core src/_core.cpp)
+  # add directories Eigen Library and the source
+  target_include_directories(_core PRIVATE src "${eigen_SOURCE_DIR}")
+  target_compile_features(_core PRIVATE cxx_std_11)
+  install(TARGETS _core DESTINATION ${SKBUILD_PROJECT_NAME})
 else()
   add_executable(main src/main.cpp src/integrator.hpp)
   target_include_directories(main PRIVATE src "${eigen_SOURCE_DIR}")
