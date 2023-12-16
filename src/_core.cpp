@@ -10,6 +10,7 @@ PYBIND11_MODULE(_core, m) {
   m.doc() = "HarmonicOscillator class";
   py::class_<HarmonicOscillator>(m, "HarmonicOscillator")
       .def(py::init<>())
-      .def("f", &HarmonicOscillator::f,
-           "compute derivative at time t with state y ");
+      .def("integrate", &HarmonicOscillator::integrate,
+           "Description of the integrate method", py::arg("time_step"),
+           py::arg("num_steps"), py::arg("initial_state"));
 }
